@@ -10,9 +10,9 @@ public interface MemberMapper {
 
 	int countMemberId(String id);
 
-	int checkMemberEmail(String email);
+	int countMemberEmail(String email);
 
-	int checkMemberNickName(String nickName);
+	int countMemberNickName(String nickName);
 
 	List<MemberDto> selectAllMember();
 
@@ -20,4 +20,12 @@ public interface MemberMapper {
 
 	int deleteMemberById(String id);
 
+	int updateMember(MemberDto dto);
+
 }
+
+
+
+
+
+

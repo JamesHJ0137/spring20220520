@@ -12,20 +12,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choong.spr.domain.MemberDto;
-import com.choong.spr.service.MemeberService;
+import com.choong.spr.service.MemberService;
 
 @Controller
 @RequestMapping("member")
 public class MemberController {
 	
 	@Autowired
-	private MemeberService service;
+	private MemberService service;
 	
-	// TODO: MemberService 작성
-	// 		addMember method 작성
-	// 		MemberMapper.java, xml 작성
-	// 		insertMember method 작성
+	// TODO : MemberService 작성
+	//                      addMember method 작성
+	//        MemberMapper.java, xml 작성
+	//                      insertMember method 작성
 	
+
 	@GetMapping("signup")
 	public void signupForm() {
 		
@@ -34,9 +35,9 @@ public class MemberController {
 	@PostMapping("signup")
 	public String signupProcess(MemberDto member, RedirectAttributes rttr) {
 		boolean success = service.addMember(member);
-		if(success) {
+		
+		if (success) {
 			rttr.addFlashAttribute("message", "회원가입이 완료되었습니다.");
-			
 			return "redirect:/board/list";
 		} else {
 			rttr.addFlashAttribute("message", "회원가입이 실패하였습니다.");
@@ -46,40 +47,40 @@ public class MemberController {
 		}
 	}
 	
-	// 아이디 중복 버튼 클릭시
 	@GetMapping(path = "check", params = "id")
 	@ResponseBody
 	public String idCheck(String id) {
+		
 		boolean exist = service.hasMemberId(id);
 		
-		if(exist) {
-			return "nope";
+		if (exist) {
+			return "notOk";
 		} else {
 			return "ok";
 		}
 	}
 	
-	// 이메일 중복 버튼 클릭시
 	@GetMapping(path = "check", params = "email")
 	@ResponseBody
 	public String emailCheck(String email) {
+		
 		boolean exist = service.hasMemberEmail(email);
 		
-		if(exist) {
-			return "nope";
+		if (exist) {
+			return "notOk";
 		} else {
 			return "ok";
 		}
 	}
 	
-	// 닉네임 중복 버튼 클릭시
 	@GetMapping(path = "check", params = "nickName")
 	@ResponseBody
 	public String nickNameCheck(String nickName) {
+		
 		boolean exist = service.hasMemberNickName(nickName);
 		
-		if(exist) {
-			return "nope";
+		if (exist) {
+			return "notOk";
 		} else {
 			return "ok";
 		}
@@ -96,28 +97,41 @@ public class MemberController {
 	@GetMapping("get")
 	public void getMember(String id, Model model) {
 		MemberDto member = service.getMemberById(id);
+		
 		model.addAttribute("member", member);
+		
 	}
 	
 	@PostMapping("remove")
 	public String removeMember(MemberDto dto, RedirectAttributes rttr) {
 		boolean success = service.removeMember(dto);
 		
-		if(success) {
-			rttr.addFlashAttribute("message", "회원 탈퇴가 완료되었습니다.");
+		if (success) {
+			rttr.addFlashAttribute("message", "회원 탈퇴 되었습니다.");
 			return "redirect:/board/list";
 		} else {
 			rttr.addAttribute("id", dto.getId());
-			return "redirect:/board/list";
+			return "redirect:/member/get";
 		}
 	}
+	
+	@PostMapping("modify")
+	public String modifyMember(MemberDto dto, String oldPassword, RedirectAttributes rttr) {
+		
+		boolean success = service.modifyMember(dto, oldPassword);
+		
+		if (success) {
+			rttr.addFlashAttribute("message", "회원 정보가 수정되었습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "회원 정보가 수정되지 않았습니다.");
+		}
+		
+		rttr.addFlashAttribute("member", dto); // model object
+		rttr.addAttribute("id", dto.getId()); // query string
+		
+		return "redirect:/member/get";
+	}
 }
-
-
-
-
-
-
 
 
 
