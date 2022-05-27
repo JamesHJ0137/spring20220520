@@ -32,6 +32,7 @@
 						<tr>
 							<th><i class="fa-solid fa-hashtag"></i></th>
 							<th>제목</th>
+							<th>작성자</th>
 							<th><i class="fa-solid fa-calendar"></i></th>
 						</tr>
 					</thead>
@@ -39,8 +40,8 @@
 						<c:forEach items="${boardList }" var="board">
 							<tr>
 								<td>${board.id }</td>
+								
 								<td>
-													
 									<c:url value="/board/get" var="getUrl">
 										<c:param name="id" value="${board.id }"></c:param>
 									</c:url>
@@ -55,8 +56,10 @@
 											${board.numOfReply }
 										</span>
 									</c:if>
-									
 								</td>
+								
+								<td>${board.writerNickName }</td>
+								
 								<td>${board.prettyInserted }</td>
 							</tr>
 						</c:forEach>
