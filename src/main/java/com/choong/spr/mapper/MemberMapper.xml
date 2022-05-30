@@ -7,7 +7,6 @@
 	<insert id="insertMember">
 		INSERT INTO Member (id, password, email, nickName)
 		VALUES (#{id}, #{password}, #{email}, #{nickName})
-	
 	</insert>
 	
 	<select id="countMemberId" resultType="int">
