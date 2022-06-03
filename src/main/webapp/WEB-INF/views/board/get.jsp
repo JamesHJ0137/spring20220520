@@ -33,6 +33,8 @@
 			$("#textarea1").removeAttr("readonly");
 			$("#modify-submit1").removeClass("d-none");
 			$("#delete-submit1").removeClass("d-none");
+			$("#addFileInputContainer1").removeClass("d-none");
+			$(".removeFileCheckBox").removeClass("d-none");
 		});
 
 		$("#delete-submit1").click(function(e) {
@@ -284,7 +286,7 @@
 					<div class="alert alert-primary">${message }</div>
 				</c:if>
 
-				<form id="form1" action="${appRoot }/board/modify" method="post">
+				<form id="form1" action="${appRoot }/board/modify" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="id" value="${board.id }" />
 
 					<div>
@@ -300,11 +302,33 @@
 					</div>
 					
 					<c:forEach items="${board.fileName }" var="file">
-						<div>
-							<img src="${imageUrl }/board/${board.id }/${file }" alt="" />
+						<%
+						String file = (String) pageContext.getAttribute("file");
+						String encodedFileName  = java.net.URLEncoder.encode(file, "UTF-8");
+						pageContext.setAttribute("encodedFileName", encodedFileName);
+						%>
+						<div class="row">
+							<div class="col-1">
+								<div class="d-none removeFileCheckBox">
+									삭제 <br />
+									<input type="checkBox" name="removeFileList" value="${file }" />
+								</div>
+							</div>
+							<div class="col-11">
+								<div>
+									<img class="img-fluid"
+										src="${imageUrl }/board/${board.id }/${encodedFileName }"
+										alt="" />
+								</div>
+							</div>
 						</div>
 					</c:forEach>
-
+					
+					<div id="addFileInputContainer1" class="d-none">
+						파일 추가 :
+						<input type="file" accept="image/*" multiple="multiple" name="addFileList" />
+					</div>					
+					
 					<div>
 						<label for="input3" class="form-label">작성자</label>
 						<input id="input3" class="form-control" type="text"

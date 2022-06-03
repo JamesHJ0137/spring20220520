@@ -44,9 +44,11 @@
         
         
         <!-- li.nav-item>a.nav-link{회원가입} -->
-        <li class="nav-item">
-        	<a href="${signupUrl }" class="nav-link ${current == 'signup' ? 'active' : '' }">회원가입</a>
-        </li>
+        <sec:authorize access="not isAuthenticated()">
+	        <li class="nav-item">
+	        	<a href="${signupUrl }" class="nav-link ${current == 'signup' ? 'active' : '' }">회원가입</a>
+	        </li>
+        </sec:authorize>
         
         <sec:authorize access="isAuthenticated()">
         	<li class="nav-item">
